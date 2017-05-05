@@ -1,0 +1,10 @@
+---
+title: "Untitled"
+author: "Belyaev.makar 144"
+date: "15 04 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+data<-read.csv2("~/project_DS/all_data fin.csv")
+```
