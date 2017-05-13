@@ -9,7 +9,8 @@
 
 # Pomenyala v sliderinputs, tam nyjno vibirat' promejytok, a ne konkretnii number. Inache nichego ne vidast.
 library(shiny)
-
+s = as.list(1:299)
+names(s)=data$country
 # Define UI for application that draws a histogram
 ui <- fluidPage(
    
@@ -20,7 +21,7 @@ ui <- fluidPage(
    sidebarLayout(
       sidebarPanel(
         selectInput("country", "Текущая страна проживания:", 
-                    choices=country),
+                    choices=s),
         hr(),
         helpText("0 - полная удовлетворенность, 100 - полная неудовлетворенность"),
         sliderInput("crime",
@@ -50,10 +51,19 @@ ui <- fluidPage(
    )
 )
 
+# Че, это норм?
+# Как нам расчитать значение уравнения, с использованием параметров из инпут: f=income*(income_user_country-income_country_x)+...+..
+
+# Расчитать уровень похожести стран lab_recomend_system
+#> s = as.list(1:299)
+#> names(s)=data$country
+
+
 
 server <- function(input, output) {
   
   output$distPlot <- renderPlot({
+    result=input$crime*(data$Crime_index[,input$country]-data$Crime_index)
     # generate bins based on input$bins from ui.R
     x    <- faithful[, 2] 
     bins <- seq(min(x), max(x), length.out = input$bins + 1)

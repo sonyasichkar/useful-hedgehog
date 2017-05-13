@@ -10,7 +10,8 @@
 # Введение для меня: ui - то что будет на html (интерфейс), server - то, что будет делать R
 # По идее в ui у на должен быть выпадающий список (?) в котором пользователь будет выбирать то, что он хочеть поменять. 
 library(shiny)
-
+s = as.list(1:299)
+names(s)=data$country
 # Define UI for application that draws a histogram
 ui <- fluidPage(
    
@@ -21,7 +22,7 @@ ui <- fluidPage(
    sidebarLayout(
       sidebarPanel(
         selectInput("country", "Текущая страна проживания:", 
-                    choices=country),
+                    choices=s),
         hr(),
         helpText("0 - полная удовлетворенность, 100 - полная неудовлетворенность"),
         sliderInput("crime",
@@ -58,9 +59,12 @@ ui <- fluidPage(
 # 2 - нам нужно будет сделать столбец со значеним "Индекса привлекательности для миграции", который будет рассчитан по нашей формуле для каждой страны 
 # 3 - немного запарится с маппингом, чтобы вывести эти значения цветами на карту и все, профит, мы молодцы, опять можем ничего не делать
 
+# Расчитать уровень похожести стран lab_recomend_system
+
 server <- function(input, output) {
   
   output$distPlot <- renderPlot({
+    result=input$crime*(data$Crime_index[,input$country]-data$Crime_index)
     # generate bins based on input$bins from ui.R
     x    <- faithful[, 2] 
     bins <- seq(min(x), max(x), length.out = input$bins + 1)
@@ -74,5 +78,4 @@ server <- function(input, output) {
 
      
 # Run the application 
-shinyApp(ui = ui, server = server)
-
+shinyAp
