@@ -1,0 +1,69 @@
+---
+title: "Untitled"
+author: "alena"
+date: "22 04 2017"
+output: html_document
+---
+
+```{r, setup}
+# wd ("/students/aamoskovaya/analysis/project_data_16")
+
+# library(readxl)
+# edu = read_excel("edu.xlsx", col_names = TRUE)
+# colnames(edu)[1] <- "Country"
+# colnames(edu)[2] <- "education"
+# 
+# 
+# crime = read_excel("crime.xlsx", col_names = TRUE)
+# colnames(crime)[2] = "crime_index"
+# 
+# eco = read_excel("eco.xlsx", col_names = TRUE)
+# colnames(eco)[2] <- "eco_EPI_score_2016"
+# library(dplyr)
+# basa = right_join(crime, eco, by = "Country")
+# basa = left_join(basa, edu, by = "Country")
+# 
+# free = read_excel("free.xlsx", col_names = TRUE)
+# colnames(free)[1] <- "Country"
+# colnames(free)[6] <- "aggregated_score_freedom"
+# basa = right_join(basa, free, by = "Country")
+# 
+# health = read_excel("health.xlsx", col_names = TRUE)
+# colnames(health)[1] <- "Country"
+# colnames(health)[2] <- "health_index"
+# basa = left_join(basa, health, by = "Country")
+# 
+# tax  = read_excel("tax.xlsx", col_names = TRUE)
+# colnames(tax)[2] = "personal_income_tax"
+# basa = left_join(basa, tax, by = "Country")
+# 
+# basa$crime_index = as.numeric(basa$crime_index)
+# basa$crime_index = as.numeric(basa$crime_index)
+
+library(readxl)
+data = read_excel("all_data_fin.xlsx") 
+
+# MIGRATIONS FLOWS
+# MODEL 
+
+# k means
+
+
+
+library(dplyr)
+migration = read.csv("migration_flows.csv", sep = ",")
+migration_small = migration %>% dplyr::select(country_orig, country_dest, countryflow_2005)
+library(reshape2)
+t = acast(migration_small, country_orig~country_dest, value.var="countryflow_2005")
+t = as.data.frame(t)
+
+
+data = read.csv("project_data.csv", sep = ";")
+library(tidyverse)
+data1 = data %>% remove_rownames %>% column_to_rownames(var="Country")
+# data1 = data1%>%select(crime_index, education)
+library('proxy') # Library of similarity/dissimilarity measures for 'dist()'
+a = dist(data1, method="cosine")
+b = as.matrix(a)
+b = as.data.frame(b) #косинусное расстояние
+```
