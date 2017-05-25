@@ -2,7 +2,7 @@
 # Введение для меня: ui - то что будет на html (интерфейс), server - то, что будет делать R
 # По идее в ui у на должен быть выпадающий список (?) в котором пользователь будет выбирать то, что он хочеть поменять. 
 library(shiny)
-data = read.csv("~/project_DS/useful-hedgehog/project_data.csv", sep = ";")
+data = read.csv("project_data.csv", sep = ";")
 library(tidyverse)
 data1 = data %>% remove_rownames %>% column_to_rownames(var="Country")
 # data1 = data1%>%select(crime_index, education)
@@ -11,11 +11,18 @@ a = dist(data1, method="cosine")
 b = as.matrix(a)
 b = as.data.frame(b) #косинусное расстояние
 ### Номера в выборе страны
-s = as.list(1:299)
+s = as.list(1:198)
 names(s)=data$country
 ### Тестируем что получается
 data$result<-60*(data[2,3]-data[,2])
 data[2,1]
+
+
+###
+rownames(data) <- data$Country 
+##
+
+
 
 # Разобраться здесь со знаками - Добавил минус, т.к большое значение рейтинга crime - плохо, а в остальных случаях, 
 # включая жизнь, чем больше, тем лучше (подмигивающий смайлик)
@@ -38,7 +45,7 @@ ui <- fluidPage(
    sidebarLayout(
       sidebarPanel(
         selectInput("country", "Текущая страна проживания:", 
-                    choices=s),
+                    choices=rownames(data)),
         hr(),
         helpText("0 - полная удовлетворенность, 100 - полная неудовлетворенность"),
         sliderInput("crime",
@@ -91,15 +98,19 @@ ui <- fluidPage(
  
 server <- function(input, output) {
   
-  output$distPlot <- renderPlot({
-    result=input$crime*(data[input$country,2]-data[,2])*(-1)+
+  output$Map <- renderPrint({
+    result=(-1)*(input$crime*(data[input$country,2]-data[,2])*(-1)+
            input$environment*(data[input$country,3]-data[,3])+
            input$education*(data[input$country,4]-data[,4])+
            input$freedom*(data[input$country,5]-data[,5])+
            input$health*(data[input$country,6]-data[,6])+
-           input$income*(data[input$country,7]-data[,7])
-    # делаем карту
-    
+           input$income*(data[input$country,7]-data[,7]))
+    countries<-as.data.frame(data$countries)
+    countries$result<-result
+    # делаем карту (или не карту)
+    barplot(countries$result,
+            ylab="Number of Telephones",
+            xlab="Year")
   })
 }
 
