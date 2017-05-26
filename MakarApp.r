@@ -27,12 +27,12 @@ rownames(data) <- data$Country
 # Разобраться здесь со знаками - Добавил минус, т.к большое значение рейтинга crime - плохо, а в остальных случаях, 
 # включая жизнь, чем больше, тем лучше (подмигивающий смайлик)
 
-data$result=60*(data[9,2]-data[,2])*(-1)+
-  22*(data[9,3]-data[,3])+
-  36*(data[9,4]-data[,4])+
-  12*(data[9,5]-data[,5])+
-  45*(data[9,6]-data[,6])+
-  69*(data[9,7]-data[,7])
+data$result=9*(data[150,2]-data[,2])*(-1)+
+  50*(data[150,3]-data[,3])+
+  30*(data[150,4]-data[,4])+
+  40*(data[150,5]-data[,5])+
+  70*(data[150,6]-data[,6])+
+  93*(data[150,7]-data[,7])
 ###
 
 # Define UI for application that draws a histogram
