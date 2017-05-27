@@ -70,7 +70,9 @@ ui <- fluidPage(
       
       # Show a plot of the generated distribution
       mainPanel(
-         plotOutput("Map")
+        verbatimTextOutput("Map")
+        
+      #  tableOutput("view")
       )
    )
 )
@@ -105,13 +107,29 @@ server <- function(input, output) {
            input$freedom*(data[input$country,5]-data[,5])+
            input$health*(data[input$country,6]-data[,6])+
            input$income*(data[input$country,7]-data[,7]))
-    countries<-as.data.frame(data$countries)
-    countries$result<-result
-    # делаем карту (или не карту)
-    barplot(countries$result,
-            ylab="Number of Telephones",
-            xlab="Year")
-  })
+    # countries<-as.data.frame(data$countries)
+    # countries$result<-result
+    # data = top5
+    # 
+    # print(as.character(rownames(data)))
+    print(result)
+
+  })  # По словам Алены Владимировны, нужно дублировать код для
+  #дальнейшей визулизации - следующем аутпуте -, например, в график
+  # делаем карту (или не карту)
+  # output$view <- renderTable({
+  #   result=(-1)*(input$crime*(data[input$country,2]-data[,2])*(-1)+
+  #                  input$environment*(data[input$country,3]-data[,3])+
+  #                  input$education*(data[input$country,4]-data[,4])+
+  #                  input$freedom*(data[input$country,5]-data[,5])+
+  #                  input$health*(data[input$country,6]-data[,6])+
+  #                  input$income*(data[input$country,7]-data[,7]))
+  #   countries<-as.data.frame(data$countries)
+  #   countries$result<-result
+  #   data = top5
+  #   data
+  #   print(as.character(rownames(data)))
+  # })
 }
 
 #output$Map <- renderPlot()
